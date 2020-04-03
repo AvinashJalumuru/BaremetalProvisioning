@@ -1,0 +1,15 @@
+- hosts: localhost
+  vars:
+    - config: "{{ playbook_dir }}/config.json"
+    - ov_template:  Ansible-DL380Gen10 
+    - profile_name: "DL380Gen10-ServerProfile"
+
+  tasks:
+    - name: Gather facts about a Server Profile by name
+      oneview_server_profile_facts:
+        config: "{{ config }}"
+        name: "{{profile_name}}"
+      delegate_to: localhost
+
+    - debug: var=server_profiles
+

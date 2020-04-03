@@ -1,0 +1,46 @@
+- hosts: localhost
+  tasks:
+  - uri:
+      body:
+      body_format: json
+      method: GET
+      url: http://10.188.175.19:5000/rest/networks/list
+      user: avinash
+      password: avinash
+      use_proxy: no
+    register: networkList
+
+  - debug:
+      msg: "{{ item }} "
+    loop: "{{ networkList.json.result }}"
+    when: networkList.json.result is defined
+
+  - uri:
+      body:
+      body_format: json
+      method: GET
+      url: http://10.188.175.19:5000/rest/oneview/list
+      user: avinash
+      password: avinash
+      use_proxy: no
+    register: oneviewList
+
+  - debug:
+      msg: "{{ item }} "
+    loop: "{{ oneviewList.json.result }}"
+    when: oneviewList.json.result is defined
+
+  - uri:
+      #body_format: json
+      method: GET
+      url: http://10.188.175.19:5000/rest/tasks
+      user: avinash
+      password: avinash
+      use_proxy: no
+    register: taskList
+
+  - debug:
+      msg: "{{ taskList }} "
+      #loop: "{{ taskList.json.result }}"
+    #when: taskList.json.result is defined
+

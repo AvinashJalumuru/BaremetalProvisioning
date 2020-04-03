@@ -1,0 +1,24 @@
+- hosts: localhost
+  vars:
+    esxi_hostname: "esxi_hostname"
+    esxi_username: "esxi_username"
+    esxi_password: "esxi_password"
+    ov_name: "VM_Name"
+    ovf_path: "/path/for/ovffile"
+  tasks:
+  - name: Gather info from standalone ESXi server having datacenter as 'ha-datacenter'
+    vmware_deploy_ovf:
+      hostname: '{{ esxi_hostname }}'
+      username: '{{ esxi_username }}'
+      password: '{{ esxi_password }}'
+      name: '{{ ov_name }}'
+      ovf: '{{ ovf_path }}'
+      validate_certs: no
+      power_on: no
+    delegate_to: localhost
+    register: info
+
+  - name: Debug VM Info
+    debug:
+      msg: "{{ info }}"
+

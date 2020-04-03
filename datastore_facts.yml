@@ -1,0 +1,20 @@
+- hosts: localhost
+  vars:
+    vcenter_hostname: "XX.XX.XX.XX"
+    vcenter_username: "vcenter_user"
+    vcenter_password: "vcenterPassword"
+    datacenter_name: "vcenter_datacenter"
+  tasks:
+  - name: Gather info from standalone ESXi server having datacenter as 'ha-datacenter'
+    vmware_datastore_info:
+      hostname: '{{ vcenter_hostname }}'
+      username: '{{ vcenter_username }}'
+      password: '{{ vcenter_password }}'
+      datacenter_name: '{{ datacenter_name }}'
+      validate_certs: no
+    delegate_to: localhost
+    register: info
+
+  - name: Debug datastoreInfo
+    debug:
+      msg: "{{ info }}"

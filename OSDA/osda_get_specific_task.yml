@@ -1,0 +1,21 @@
+- hosts: localhost
+  vars:
+  - taskId: "4478"
+  tasks:
+  - set_fact:
+      task_url: "http://10.188.175.19:5000/rest/task/{{ taskId }}"
+
+  - uri:
+      body_format: json
+      method: GET
+      url: "{{ task_url }}"
+      user: avinash
+      password: avinash
+      use_proxy: no
+    register: taskList
+
+  - debug:
+      msg: "{{ item }} "
+    loop: "{{ taskList.json.result }}"
+    when: taskList.json.result is defined
+

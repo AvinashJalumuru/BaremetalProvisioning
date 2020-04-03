@@ -1,0 +1,16 @@
+- hosts: localhost
+  tasks:
+  - uri:
+      body:
+      body_format: json
+      method: GET
+      url: http://10.188.175.19:5000/rest/ospackage/list
+      user: avinash
+      password: avinash
+      use_proxy: no
+    register: osList
+
+  - debug:
+      msg: "{{ item.osname }} => {{ item.package }}"
+    loop: "{{ osList.json.result }}"
+

@@ -1,0 +1,31 @@
+- hosts: localhost
+  vars:
+  - input_json: "./deploy.json"
+  tasks:
+  - uri:
+      body_format: json
+      body: "{{ lookup('file', input_json) }}"
+      method: POST
+      url: http://10.188.175.19:5000/rest/deploy
+      user: avinash
+      password: avinash
+      use_proxy: no
+    register: deployList
+
+  - debug:
+      msg: "{{ deployList }} "
+
+  - uri:
+      body_format: json
+      method: GET
+      url: http://10.188.175.19:5000/rest/tasks
+      user: avinash
+      password: avinash
+      use_proxy: no
+    register: taskList
+
+  - debug:
+      msg: "{{ item }} "
+    loop: "{{ taskList.json.result }}"
+    when: taskList.json.result is defined
+

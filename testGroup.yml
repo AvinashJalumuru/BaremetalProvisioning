@@ -1,0 +1,27 @@
+- hosts: localhost
+  vars:
+  - new_ip: "10.188.191.89"
+  - ssh_user: "root"
+  - ssh_pass: "P@ssw0rd123"
+  tasks:
+  - add_host:
+      hostname: "{{ new_ip }}"
+      ansible_user: "{{ ssh_user }}"
+      ansible_ssh_pass: "{{ ssh_pass }}"
+      groups: [ 'bm-new-group' ]
+
+  - set_fact:
+      bm_host: "{{ new_ip }}"
+
+  - debug:
+      msg: "{{ bm_host }}"
+
+- hosts: bm-new-group
+  tasks:
+  - name: List All Files
+    shell: 'ls /'
+    register: whole
+
+
+  - debug:
+      msg: "{{ whole }}"

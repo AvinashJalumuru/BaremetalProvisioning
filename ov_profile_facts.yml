@@ -3,13 +3,30 @@
     - config: "{{ playbook_dir }}/config.json"
     - ov_template:  Ansible-DL380Gen10 
     - profile_name: "DL380Gen10-ServerProfile"
+    - username: ""
+    - password: ""
+    - api_version: 600
+    - hostname: ""
+    - withConf: "yes"
 
   tasks:
     - name: Gather facts about a Server Profile by name
       oneview_server_profile_facts:
-        config: "{{ config }}"
+        hostname: "{{ hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        api_version: "{{ api_version }}"
         name: "{{profile_name}}"
       delegate_to: localhost
+      when: withConf != "yes"
 
+    - name: Gather facts about a Server Profile by name
+      oneview_server_profile_facts:
+        config: "{{ config }}"
+        api_version: "{{ api_version }}"
+        name: "{{profile_name}}"
+      delegate_to: localhost
+      when: withConf == "yes"
+      
     - debug: var=server_profiles
 
